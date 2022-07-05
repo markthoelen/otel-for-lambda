@@ -1,0 +1,23 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: AWS Serverless API - overview-lambda
+
+Resources:
+  overviewLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: io.quarkus.amazon.lambda.runtime.QuarkusStreamHandler::handleRequest
+      Runtime: java11
+      CodeUri: target/function.zip
+      MemorySize: 1024
+      Policies: AWSLambdaBasicExecutionRole
+      Timeout: 300
+      Events:
+        Resource:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: any
+      Environment:
+        Variables:
+          AWS_REGION: eu-central-1
